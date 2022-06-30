@@ -13,8 +13,10 @@ namespace BookPublication.API.Models
 		public string Name { get; set; }
         [Required]
         public string Country { get; set; }
-
         [Required]
+        public int PublicationOpenYear { get; set; }
+
+        
         public List<Book> Books { get; set; }
 	}
 }

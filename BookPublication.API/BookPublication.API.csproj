@@ -20,8 +20,28 @@
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="AutoMapper" />
+    <None Remove="data\" />
+    <None Remove="data\context\" />
+    <None Remove="data\Repository\" />
+    <None Remove="Dtos\" />
+    <None Remove="Dtos\BookDtos\" />
+    <None Remove="Dtos\PublicationDtos\" />
+    <None Remove="Services\" />
+    <None Remove="Services\BookServices\" />
+    <None Remove="Services\PublicationServices\" />
+    <None Remove="Responses\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="data\" />
+    <Folder Include="data\context\" />
+    <Folder Include="data\Repository\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Dtos\BookDtos\" />
+    <Folder Include="Dtos\PublicationDtos\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\BookServices\" />
+    <Folder Include="Services\PublicationServices\" />
+    <Folder Include="Responses\" />
   </ItemGroup>
 </Project>

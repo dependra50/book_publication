@@ -16,7 +16,7 @@ namespace BookPublication.API.Models
         [Required]
         public string Author { get; set; }
         [Required]
-        public DateTime PublishedDate { get; set; }
+        public int PublishedYear { get; set; }
         [Required]
         public string Edition { get; set; }
         [Required]
