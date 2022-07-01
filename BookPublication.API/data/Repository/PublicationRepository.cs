@@ -1,4 +1,6 @@
 ﻿using System;
+using BookPublication.API.Contracts.Pagination;
+using BookPublication.API.Contracts.Responses;
 using BookPublication.API.data.context;
 using BookPublication.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -58,11 +60,49 @@ namespace BookPublication.API.data.Repository
             return  await _dataContext.Publications.ToListAsync();
         }
 
+        public async Task<DataResponse<Publication>> GetAllPublication(PaginationFilter paginationFilter = null)
+        {
+            if(paginationFilter == null)
+            {
+                var dataWithouPagination = await _dataContext.Publications.ToListAsync();
+                return new DataResponse<Publication>(dataWithouPagination);
+            }
+
+            var skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+            var count = await _dataContext.Publications.AsNoTracking().LongCountAsync();
+            var data = await _dataContext.Publications.AsNoTracking()
+                                               .Skip(skip).Take(paginationFilter.PageSize).ToListAsync();
+
+            return new DataResponse<Publication>(data, count);
+
+        }
+
         public async Task<List<Publication>> GetAllPublicationWithBooks()
         {
             return await _dataContext.Publications
                                      .Include(b=>b.Books)
                                     .ToListAsync();
+        }
+
+        public async Task<DataResponse<Publication>> GetAllPublicationWithBooks(PaginationFilter paginationFilter = null)
+        {
+            if(paginationFilter == null)
+            {
+                var dataWithoutPagination = await _dataContext.Publications
+                                     .Include(b => b.Books)
+                                    .ToListAsync();
+
+                return new DataResponse<Publication>(dataWithoutPagination);
+            }
+
+            var skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+            var count = await _dataContext.Publications.AsNoTracking().LongCountAsync();
+            var data = await _dataContext.Publications.AsNoTracking().Include(b=>b.Books)
+                                               .Skip(skip).Take(paginationFilter.PageSize).ToListAsync();
+
+            return new DataResponse<Publication>(data, count);
+
+
         }
 
         public async Task<Publication?> GetPublicationBYId(int publicationId)

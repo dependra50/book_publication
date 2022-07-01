@@ -87,6 +87,19 @@ namespace BookPublication.API.Controllers
 
         }
 
+        [HttpGet]
+        [Route("allbooks/{publicationId}")]
+        public async Task<IActionResult> GetAllBookBYPublicationId(int publicationId)
+        {
+            var result = await _bookRepository.GetBookByPublicationId(publicationId);
+            if (result == null)
+            {
+                return Ok("No Data Found!");
+            }
+            return Ok(result);
+
+        }
+
 
         [HttpPut]
         [Route("updatebook")]

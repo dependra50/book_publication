@@ -1,4 +1,6 @@
 ﻿using System;
+using BookPublication.API.Contracts.Pagination;
+using BookPublication.API.Contracts.Responses;
 using BookPublication.API.data.context;
 using BookPublication.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +42,23 @@ namespace BookPublication.API.data.Repository
                                            .ToListAsync();
         }
 
+        public async Task<DataResponse<Book>> GetAllBooks(PaginationFilter paginationFilter = null)
+        {
+            if(paginationFilter == null)
+            {
+                var dataWithoutPagination = await _dataContext.Books.Include(p => p.Publication)
+                                           .ToListAsync();
+                return new DataResponse<Book> (dataWithoutPagination );
+            }
+
+            var skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+            var count = await _dataContext.Books.AsNoTracking().LongCountAsync();
+            var data = await _dataContext.Books.AsNoTracking().Include(p=>p.Publication).
+                                               Skip(skip).Take(paginationFilter.PageSize).ToListAsync();
+
+            return new DataResponse<Book>(data, count);
+        }
+
         public async Task<Book?> GetBookBYId(int bookId)
         {
             var bookFromRepo = await _dataContext.Books.Where(b => b.Id == bookId)
@@ -61,6 +80,28 @@ namespace BookPublication.API.data.Repository
             return await _dataContext.Books.Where(b => b.PublicationId == publicationId)
                                             .Include(p => p.Publication)
                                             .ToListAsync();
+        }
+
+        public async Task<DataResponse<Book>> GetBookByPublicationId(int publicationId, PaginationFilter paginationFilter = null)
+        {
+            if(paginationFilter == null)
+            {
+                var dataWithoutPagination = await _dataContext.Books.Where(b => b.PublicationId == publicationId)
+                                            .Include(p => p.Publication)
+                                            .ToListAsync();
+
+                return new DataResponse<Book>(dataWithoutPagination);
+            }
+
+            var skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+
+            var count = await _dataContext.Books.AsNoTracking().Where(p=>p.PublicationId == publicationId)
+                                                            .LongCountAsync();
+            var data = await _dataContext.Books.AsNoTracking().Where(p => p.PublicationId == publicationId)
+                                                              .Include(p=>p.Publication)
+                                                              .Skip(skip).Take(paginationFilter.PageSize).ToListAsync();
+
+            return new DataResponse<Book>(data, count);
         }
 
         public async Task<bool> IsBookExistById(int bookId)

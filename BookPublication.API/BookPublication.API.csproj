@@ -30,6 +30,12 @@
     <None Remove="Services\BookServices\" />
     <None Remove="Services\PublicationServices\" />
     <None Remove="Responses\" />
+    <None Remove="Services\UriServices\" />
+    <None Remove="Contracts\" />
+    <None Remove="Contracts\Requests\" />
+    <None Remove="Contracts\Responses\" />
+    <None Remove="Contracts\Requests\Queries\" />
+    <None Remove="Contracts\Pagination\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -43,5 +49,11 @@
     <Folder Include="Services\BookServices\" />
     <Folder Include="Services\PublicationServices\" />
     <Folder Include="Responses\" />
+    <Folder Include="Services\UriServices\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Contracts\Requests\" />
+    <Folder Include="Contracts\Responses\" />
+    <Folder Include="Contracts\Requests\Queries\" />
+    <Folder Include="Contracts\Pagination\" />
   </ItemGroup>
 </Project>
