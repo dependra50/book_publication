@@ -10,6 +10,10 @@ namespace BookPublication.API.Dtos.PublicationDtos
         public string Country { get; set; }
 
         public int PublicationOpenYear { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string Email { get; set; }
     }
 }
 

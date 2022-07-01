@@ -113,6 +113,9 @@ namespace BookPublication.API.Controllers
                 publicationFromRepo.Country = updatePublicationDto.Country;
                 publicationFromRepo.PublicationOpenYear = updatePublicationDto.PublicationOpenYear;
                 publicationFromRepo.Name = updatePublicationDto.Name;
+                publicationFromRepo.Email = updatePublicationDto.Email;
+                publicationFromRepo.PhoneNumber = updatePublicationDto.PhoneNumber;
+
                 await _publicationRepository.UpdatePublication(publicationFromRepo);
                 return Ok("Publication update successfully");
             }
