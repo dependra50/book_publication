@@ -7,7 +7,9 @@ namespace BookPublication.API.data.Repository
 	{
         public Task<Publication> AddPublication(Publication publication);
         public Task<Publication?> GetPublicationBYId(int publicationId);
+        public Task<Publication?> GetPublicationWithBookById(int publicationId);
         public Task<List<Publication>> GetAllPublication();
+        public Task<List<Publication>> GetAllPublicationWithBooks();
         public Task DeletePublication(Publication publication);
         public Task UpdatePublication(Publication publication);
         public Task<Publication> GetAllBookByPublicationName(string publicationName);

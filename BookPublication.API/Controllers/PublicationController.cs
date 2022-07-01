@@ -43,6 +43,100 @@ namespace BookPublication.API.Controllers
             return BadRequest("ModelState Error");
 
         }
+
+        [HttpGet]
+        [Route("publication/{publicationId}")]
+        public async Task<IActionResult> GetPublicationWithoutBooks(int publicationId)
+        {
+            var result = await _publicationRepository.GetPublicationBYId(publicationId);
+            if (result == null)
+            {
+                return Ok("No Data Found!");
+            };
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("publicationwithbooks/{publicationId}")]
+        public async Task<IActionResult> GetPublicationWithBooks(int publicationId)
+        {
+            var result = await _publicationRepository.GetPublicationWithBookById(publicationId);
+            if (result == null)
+            {
+                return Ok("No Data Found!");
+            };
+            return Ok(result);
+
+        }
+
+
+        [HttpGet]
+        [Route("allpublicationwithoutbooks")]
+        public async Task<IActionResult> GetAllPublicationWithoutBooks()
+        {
+            var result = await _publicationRepository.GetAllPublication();
+            if (result == null)
+            {
+                return Ok("No Data Found!");
+            };
+            return Ok(result);
+
+        }
+
+
+        [HttpGet]
+        [Route("allpublicationwithbooks")]
+        public async Task<IActionResult> GetAllPublicationWithBooks()
+        {
+            var result = await _publicationRepository.GetAllPublicationWithBooks();
+            if (result == null)
+            {
+                return Ok("No Data Found!");
+            };
+            return Ok(result);
+
+        }
+
+
+        [HttpPut]
+        [Route("updatePublication")]
+        public async Task<IActionResult> UpdatePublication(UpdatePublicationDto updatePublicationDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var publicationFromRepo = await _publicationRepository.GetPublicationBYId(updatePublicationDto.Id);
+                if(publicationFromRepo == null)
+                {
+                    return BadRequest("Publication doesnot exist");
+                }
+                publicationFromRepo.Country = updatePublicationDto.Country;
+                publicationFromRepo.PublicationOpenYear = updatePublicationDto.PublicationOpenYear;
+                publicationFromRepo.Name = updatePublicationDto.Name;
+                await _publicationRepository.UpdatePublication(publicationFromRepo);
+                return Ok("Publication update successfully");
+            }
+            ModelState.AddModelError("", "ModelState Error");
+            return BadRequest("ModelState Error");
+
+        }
+
+        [HttpDelete]
+        [Route("deletepublication/{publicationId}")]
+        public async Task<IActionResult> DeletePublication(int publicationId)
+        {
+            var isBookUsingPubication = await _bookRepository.AnyBookHavingPublicationId(publicationId);
+            if (isBookUsingPubication)
+                return BadRequest("Cannot deleted publication one of the book already published by publication");
+            var publicationFromRepo = await _publicationRepository.GetPublicationBYId(publicationId);
+            if (publicationFromRepo == null)
+                return BadRequest("Publication doesnot exist");
+
+            return Ok("Publication Deleted successfully");
+        }
+
+
+
     }
 }
 

@@ -21,6 +21,11 @@ namespace BookPublication.API.data.Repository
             return book;
         }
 
+        public async Task<bool> AnyBookHavingPublicationId(int publicationId)
+        {
+            return await _dataContext.Books.AnyAsync(b => b.PublicationId == publicationId);
+        }
+
         public async Task DeleteBook(Book book)
         {
             //var bookFromRepo = await _dataContext.Books.FindAsync(bookId);
@@ -73,6 +78,11 @@ namespace BookPublication.API.data.Repository
             _dataContext.Books.Update(book);
             await _dataContext.SaveChangesAsync();
         }
+
+       
+        
+
+        
     }
 }
 

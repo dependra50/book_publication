@@ -15,6 +15,7 @@ namespace BookPublication.API.data.Repository
 		public Task<List<Book>> GetAllBooks();
 		public Task<bool> IsBookExistById(int bookId);
 		public Task<bool> IsBookExistByName(string bookName);
+		public Task<bool> AnyBookHavingPublicationId(int publicationId);
 	}
 }
 

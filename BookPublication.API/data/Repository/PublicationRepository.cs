@@ -58,10 +58,24 @@ namespace BookPublication.API.data.Repository
             return  await _dataContext.Publications.ToListAsync();
         }
 
+        public async Task<List<Publication>> GetAllPublicationWithBooks()
+        {
+            return await _dataContext.Publications
+                                     .Include(b=>b.Books)
+                                    .ToListAsync();
+        }
+
         public async Task<Publication?> GetPublicationBYId(int publicationId)
         {
             return await _dataContext.Publications.Where(p => p.Id == publicationId)
                                                    .FirstOrDefaultAsync();
+        }
+
+        public async Task<Publication?> GetPublicationWithBookById(int publicationId)
+        {
+            return await _dataContext.Publications
+                                     .Include(b => b.Books)
+                                      .FirstOrDefaultAsync();
         }
 
         public async Task<bool> IsPublicationExistById(int publicationId)
