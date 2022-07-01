@@ -1,4 +1,5 @@
 ﻿using BookPublication.API.data.context;
+using BookPublication.API.data.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDBContext>(o =>
-o.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
+    o.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+//builder.Services.AddScoped<IBoo>
 
 var app = builder.Build();
 

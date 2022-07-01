@@ -29,9 +29,16 @@ namespace BookPublication.API.data.Repository
 
         }
 
+        public async Task<List<Book>> GetAllBooks()
+        {
+            return await _dataContext.Books.Include(p => p.Publication)
+                                           .ToListAsync();
+        }
+
         public async Task<Book?> GetBookBYId(int bookId)
         {
             var bookFromRepo = await _dataContext.Books.Where(b => b.Id == bookId)
+                                                        .Include(p=>p.Publication)
                                                         .FirstOrDefaultAsync();
             return bookFromRepo;
         }
@@ -39,6 +46,7 @@ namespace BookPublication.API.data.Repository
         public async Task<Book?> GetBookByISBN(string isbn)
         {
             var bookFromRepo = await _dataContext.Books.Where(b => b.ISBN == isbn)
+                                                        .Include(p => p.Publication)
                                                         .FirstOrDefaultAsync();
             return bookFromRepo;
         }
@@ -46,7 +54,18 @@ namespace BookPublication.API.data.Repository
         public async Task<List<Book>> GetBookByPublicationId(int publicationId)
         {
             return await _dataContext.Books.Where(b => b.PublicationId == publicationId)
+                                            .Include(p => p.Publication)
                                             .ToListAsync();
+        }
+
+        public async Task<bool> IsBookExistById(int bookId)
+        {
+            return await _dataContext.Books.AnyAsync(b => b.Id == bookId);
+        }
+
+        public async Task<bool> IsBookExistByName(string bookName)
+        {
+            return await _dataContext.Books.AnyAsync(b => b.Title == bookName);
         }
 
         public async Task UpdateBook(Book book)
