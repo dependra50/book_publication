@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+builder.Services.AddScoped<IUriService, UriService>();
 
 builder.Services.AddSingleton<IUriService>(provider =>
 {
