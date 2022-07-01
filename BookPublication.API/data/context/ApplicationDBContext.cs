@@ -16,6 +16,14 @@ namespace BookPublication.API.data.context
 		{
 			base.OnModelCreating(modelBuilder);
 
+			modelBuilder.Entity<Book>(options =>
+			{
+				options.HasOne<Publication>(p => p.Publication)
+						.WithMany(b => b.Books)
+						.HasForeignKey(p => p.PublicationId)
+						.OnDelete(DeleteBehavior.NoAction);
+			});
+
 		}
 	}
 }
